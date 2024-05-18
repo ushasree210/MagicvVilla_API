@@ -1,5 +1,6 @@
 //using Serilog;
 
+using MagicvVilla_VilaAPI;
 using MagicvVilla_VilaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    .WriteTo.File("log/villasLogs.txt",rollingInterval: RollingInterval.Day).CreateLogger();
 
 //builder.Host.UseSerilog();
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
