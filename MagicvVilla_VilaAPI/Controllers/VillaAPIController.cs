@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Runtime.InteropServices;
 
-namespace MagicvVilla_VilaAPI.Controllers
+namespace MagicVilla_VilaAPI.Controllers
 {
     [Route("api/VillaAPI")]
     [ApiController]
@@ -106,7 +106,7 @@ namespace MagicvVilla_VilaAPI.Controllers
                 }
                 if (await _dbVilla.GetAsync(u => u.Name.ToLower() == createDTO.Name.ToLower()) != null)
                 {
-                    ModelState.AddModelError("CustomErro", "Villa already Exists!");
+                    ModelState.AddModelError("CustomError", "Villa already Exists!");
                     return BadRequest(ModelState);
                 }
 
