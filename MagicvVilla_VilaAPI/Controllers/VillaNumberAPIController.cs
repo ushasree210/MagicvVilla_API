@@ -5,6 +5,7 @@ using MagicvVilla_VilaAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace MagicvVilla_VilaAPI.Controllers
 {
@@ -91,12 +92,12 @@ namespace MagicvVilla_VilaAPI.Controllers
             {
                 if(await _dbVillaNumber.GetAsync(u=>u.VillaNo==createDTO.VillaNo)!=null)
                 {
-                    ModelState.AddModelError("CustomerError", "Villa Number Already Exists!");
+                    ModelState.AddModelError("ErrorMessages", "Villa Number Already Exists!");
                     return BadRequest(ModelState);
                 }
                 if(await _dbVilla.GetAsync(u => u.Id == createDTO.VillaNo) != null)
                 {
-                    ModelState.AddModelError("CustomerError", "Villa ID is Invalid");
+                    ModelState.AddModelError("ErrorMessages", "Villa ID is Invalid");
                     return BadRequest(ModelState);
                 }
                 if (createDTO == null)
@@ -160,17 +161,18 @@ namespace MagicvVilla_VilaAPI.Controllers
             {
                 if(updateDTO == null || id!=updateDTO.VillaNo)
                 {
-                    return BadRequest();
+                    ModelState.AddModelError("ErrorMessages", "Villa NO  should not change");
+                    return BadRequest(ModelState);
                 }
                 if (await _dbVilla.GetAsync(u => u.Id == updateDTO.VillaNo) != null)
                 {
-                    ModelState.AddModelError("CustomerError", "Villa ID is Invalid");
+                    ModelState.AddModelError("ErrorMessages", "Villa ID is Invalid");
                     return BadRequest(ModelState);
                 }
                 VillaNumber model = _mapper.Map<VillaNumber>(updateDTO);
 
                 await _dbVillaNumber.UpdateAsync(model);
-                _response.StatusCode = System.Net.HttpStatusCode.NoContent;
+                _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);
             }
